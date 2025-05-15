@@ -1,5 +1,5 @@
-const connections = {};
-const users = {};
+exports.connections = {};
+exports.users = {};
 
 const broadcast = (sendersuuid, uuid, text) => {
     console.log(uuid, text);
