@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ChatArea from "../Components/ChatArea";
 import { contacts } from "../DummyData";
 import { contactInterface } from "../Utils/Interfaces";
@@ -6,11 +6,13 @@ import searchImg from '../assets/search-sort-svgrepo-com.svg'
 import plusImg from '../assets/plus-square-svgrepo-com.svg'
 import useWebSocket from "react-use-websocket";
 import { SocketContext } from "../AppContext";
+import { AuthContext } from "../AuthContext";
 
 function HomePage({toggleModel}: any) {
     const [searchWord, setSearchWord] = useState<string>("");
     const [selected, setSelected] = useState<number>(1);
     const {userData, serverURL} = useContext(SocketContext)
+    const {fetchUser, setUserInfo} = useContext(AuthContext);
     const searchInputHandeler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchWord(e.target.value);
     }
@@ -20,6 +22,10 @@ function HomePage({toggleModel}: any) {
             'username': userData.userName,
         }
     });
+
+    useEffect(() => {
+        fetchUser(userData.userName).then((res:any) => {console.log(res); setUserInfo(res.user)});
+    }, [])
     
     return ( 
         <div className="flex w-full px-3 min-h-[90vh] gap-x-2">

@@ -11,7 +11,7 @@ function App() {
   const [count, setCount] = useState(0)
   const {userData, setUserData} = useContext(SocketContext);  
   const changeHandeler = (e : React.ChangeEvent<HTMLInputElement>) => {
-          const {type, value, id} = e.target;
+          const {value, id} = e.target;
           setUserData((prev: any) => {
               return {
                   ...prev,
