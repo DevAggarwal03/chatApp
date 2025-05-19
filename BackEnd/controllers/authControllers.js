@@ -1,11 +1,15 @@
 const pgClient = require('../DB');
+const jwt = require('jsonwebtoken')
+
+const jwtSecret = process.env.jwtSecret;
 
 exports.fetchUser = async (req, res) => {
-    const {username} = req.query;
-    console.log(username);
+    const userData = req.userData;
+    console.log(req.headers.token)
+    console.log(userData.username);
     const sqlQuery = `SELECT id, username, email FROM users WHERE username = $1`
     try {
-        const response = await pgClient.query(sqlQuery, [username])
+        const response = await pgClient.query(sqlQuery, [userData.username])
         if(response.rows[0]){
             res.json({
                 success: true,
@@ -22,6 +26,59 @@ exports.fetchUser = async (req, res) => {
     }
 }
 
+const genToken = (data, key) => {
+    const token = jwt.sign(data, key, {
+        expiresIn: '1h'
+    }) 
+    return token;
+}
+
+exports.signinUser = async (req, res) => {
+    const {username, email, password} = req.body;
+    const selectQuery = `SELECT id, username, email, password FROM users WHERE username = $1`
+    try {
+        const response = await pgClient.query(selectQuery, [username])
+        if(response.rows[0].password == password){
+            try {
+                const payload = {
+                        username: username,
+                        id: response.rows[0].id,
+                        email: email
+                    }
+                const webToken = genToken(payload, jwtSecret);
+
+                // res.cookie("token", webToken, {
+                //     httpOnly: true,
+                //     secure: true, 
+                //     sameSite: "strict",
+                // });
+
+                res.status(200).json({
+                    message: 'signin successful',
+                    success: true,
+                    token: webToken,
+                });
+
+            } catch (error) {
+                res.json({
+                    message: 'jsonWebToken error, while decoding',
+                    success: false
+                }) 
+            }
+        }else{
+            res.json({
+                message: "not correct password",
+                success: false,
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: 'DB error',
+            success: false
+        })    
+    }
+}
+
 exports.signupUser = async (req, res) => {
     const {username, email, password} = req.body;
     console.log(username, email, password);
@@ -31,9 +88,8 @@ exports.signupUser = async (req, res) => {
         const res1 = await pgClient.query(selectQuery, [username]);
         if(res1.rows[0]){
             res.json({
-                success: true,
-                message: 'already logged in',
-                userId: res1.rows[0].id,
+                success: false,
+                message: 'user already exists',
             })
             return;
         }else{

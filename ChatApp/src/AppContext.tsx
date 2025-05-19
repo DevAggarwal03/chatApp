@@ -1,18 +1,39 @@
-import React, { createContext, useRef } from "react";
+import axios from "axios";
+import React, { createContext, useContext, useRef } from "react";
 import { useState } from "react";
+import { AuthContext } from "./AuthContext";
 export const SocketContext = createContext<any>('');
 
 
 function AppContextProvider({children}: {children: React.ReactNode}) {
     
-    
+    const {getToken} = useContext(AuthContext);
+    const serverHttpURL = import.meta.env.VITE_BACKEND_URL;
     const serverURL = import.meta.env.VITE_WEB_SOCKET_SERVER;
     const [userData, setUserData] = useState<any>({userName: "", password: "", email: ""})
     const [previousMsgs, setPreviousMsgs] = useState([])
+    const [acceptedRequests, setAcceptedRequests] = useState<any>([]);
+    const [sentRequests, setSentRequests] = useState<any>([]);
+    const [recievedRequests, setRecievedRequests] = useState<any>([]);
 
-   
+    const fetchFriendRequests = async(status: string) => {
+        try {
+            const response = await axios.get(`${serverHttpURL}/api/v1/fetchRequests`, {
+                headers:{
+                    token: getToken(),
+                },
+                params: {
+                    status: status
+                }
+            })
+            return response.data
+        } catch (error) {
+            console.error(error);
+            return {};        
+        }
+    }     
     return ( 
-       <SocketContext.Provider value={{userData, setUserData, previousMsgs, setPreviousMsgs, serverURL}}>
+       <SocketContext.Provider value={{recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, previousMsgs, setPreviousMsgs, serverURL}}>
            {children}
        </SocketContext.Provider> 
      );

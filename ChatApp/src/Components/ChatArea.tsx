@@ -5,7 +5,7 @@ import useWebSocket from "react-use-websocket";
 import { useContext } from "react";
 import { SocketContext } from "../AppContext";
 interface chatAreaInterface {
-    selected: number,
+    selected: number | undefined,
     contacts: contactInterface[]
 }
 
@@ -14,8 +14,7 @@ function ChatArea({selected, contacts}: chatAreaInterface) {
 
     
     //for now anyone can send and recieve message
-    const {serverURL, userData} = useContext(SocketContext)
-    const {previousMsgs, setPreviousMsgs} = useContext(SocketContext);
+    const {serverURL, userData, previousMsgs, setPreviousMsgs} = useContext(SocketContext);
     const {lastMessage} = useWebSocket(serverURL, {
         share: true,
         queryParams: {
