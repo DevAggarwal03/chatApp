@@ -4,6 +4,7 @@ const cors = require('cors');
 const http = require('http')
 require('dotenv').config();
 const url = require('url')
+// const { v4: uuidv4 } = require('uuid');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./Routers/auth.Router.js');
 const firendReqRouter = require('./Routers/friendReq.Router.js');
@@ -38,24 +39,20 @@ const websocetserver = new WebSocketServer({ server: httpserver });
 
 websocetserver.on('connection', (connection, request) => {
     const parsedurl = url.parse(request.url, true);
-    const {user_id, username} = parsedurl.query;
-    connections[user_id] = connection;
-    users[user_id] = {
+    const {username,userId} = parsedurl.query;
+    console.log('query params: ', parsedurl.query)
+    connections[userId] = connection;
+    users[userId] = {
+        userId,
         username,
         isonline: true,
     };
-    console.log(user_id, users[user_id]);
-    connection.on('message', (message) => handlemessage(message, user_id));
-    connection.on('close', () => handleclose(user_id));
+    // console.log(userId, users[userId]);
+    connection.on('message', (message) => handlemessage(message, connection, userId));
+    connection.on('close', () => handleclose(userId));
 });
 
 const port = 8080;
-
-app.get('/test', (req, res) => {
-    res.json({
-        message: `hello fro port: ${port}`
-    })
-})
 
 httpserver.listen(port, (req, res) => {
     console.log('websocket server started at port:', port);

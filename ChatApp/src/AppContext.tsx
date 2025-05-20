@@ -11,7 +11,9 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const serverHttpURL = import.meta.env.VITE_BACKEND_URL;
     const serverURL = import.meta.env.VITE_WEB_SOCKET_SERVER;
     const [userData, setUserData] = useState<any>({userName: "", password: "", email: ""})
-    const [previousMsgs, setPreviousMsgs] = useState([])
+    const webSocketRef = useRef<WebSocket | null>(null);
+    const [selectedPerson, setSelectedPerson] = useState<number | null>(null)
+    const [currentMsgs, setCurrentMsgs] = useState([])
     const [acceptedRequests, setAcceptedRequests] = useState<any>([]);
     const [sentRequests, setSentRequests] = useState<any>([]);
     const [recievedRequests, setRecievedRequests] = useState<any>([]);
@@ -33,7 +35,7 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
         }
     }     
     return ( 
-       <SocketContext.Provider value={{recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, previousMsgs, setPreviousMsgs, serverURL}}>
+       <SocketContext.Provider value={{selectedPerson, setSelectedPerson, webSocketRef, recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, currentMsgs, setCurrentMsgs, serverURL}}>
            {children}
        </SocketContext.Provider> 
      );

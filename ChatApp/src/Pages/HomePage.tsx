@@ -12,8 +12,7 @@ import defImg from '../assets/profile-default-svgrepo-com.svg'
 
 function HomePage({toggleModel}: any) {
     const [searchWord, setSearchWord] = useState<string>("");
-    const [selected, setSelected] = useState<number | undefined>(undefined);
-    const {userData,fetchFriendRequests, sentRequests, setSentRequests, recievedRequests, setRecievedRequests, serverURL, acceptedRequests, setAcceptedRequests} = useContext(SocketContext)
+    const {selectedPerson, setSelectedPerson, userData,fetchFriendRequests, sentRequests, setSentRequests, recievedRequests, setRecievedRequests, serverURL, acceptedRequests, setAcceptedRequests} = useContext(SocketContext)
     const {fetchUser, setUserInfo, userInfo} = useContext(AuthContext);
     const searchInputHandeler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchWord(e.target.value);
@@ -23,6 +22,7 @@ function HomePage({toggleModel}: any) {
         fetchUser(userData.userName).then((res:any) => {setUserInfo(res.user)});
         fetchFriendRequests("accepted").then((res:any) => {
             setAcceptedRequests(res.requests);
+            setSelectedPerson(res.requests[0]['user_id']);
         });
         if(userInfo){
             fetchFriendRequests("pending").then((res:any) => {
@@ -41,12 +41,7 @@ function HomePage({toggleModel}: any) {
         console.log(recievedRequests)
     }
 
-    const {lastMessage, sendMessage, readyState} = useWebSocket(serverURL, {
-        share: true,
-        queryParams: {
-            'username': userData.userName,
-        }
-    });
+    console.log(selectedPerson);
     
     return ( 
         <div className="flex w-full px-3 min-h-[90vh] gap-x-2">
@@ -65,7 +60,7 @@ function HomePage({toggleModel}: any) {
                 {
                    acceptedRequests?.map((friend: any) => 
                     {
-                        return <div key={friend.request_id} onClick={() => {setSelected(friend.id)}} className={`flex border-2 ${selected == friend.id ? 'border-white scale-103': 'border-none'} rounded-xl bg-[#023047] p-2 text-white gap-x-2`}>
+                        return <div key={friend.request_id} onClick={() => {setSelectedPerson(friend['user_id'])}} className={`flex border-2 ${selectedPerson == friend['user_id'] ? 'border-white scale-103': 'border-none'} rounded-xl bg-[#023047] p-2 text-white gap-x-2`}>
                             <img src={defImg} className="size-[80px]"/>
                             <div className="flex flex-col py-4">
                                 <span className="text-green-300 font-bold">{friend.friend_username}</span>
@@ -81,7 +76,7 @@ function HomePage({toggleModel}: any) {
             </div>
 
             <div className="min-h-full w-9/12 px-2 py-[1px] items-center justify-center flex border-2 bg-[#e9c46a] border-black rounded-xl">
-                <ChatArea selected={selected} contacts={contacts}/>
+                <ChatArea selected={selectedPerson}/>
             </div>
 
         </div>
