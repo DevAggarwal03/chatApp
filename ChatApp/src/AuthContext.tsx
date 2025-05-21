@@ -12,7 +12,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
     const [signInPage, setSignInPage] = useState<boolean>(false);
     const signUp = async (username: string, email: string, password: string) => {
         try {
-            const response = await axios.post(`${backEndURL}/api/v1/auth/signup`, {
+            const response = await axios.post(`${backEndURL}/api/v1/user/register`, {
                 username,
                 email,
                 password
@@ -48,7 +48,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
 
     const signIn = async (username: string, email: string, password: string) => {
         try {
-            const response = await axios.post(`${backEndURL}/api/v1/auth/signin`, {
+            const response = await axios.post(`${backEndURL}/api/v1/user/access`, {
                 username,
                 email,
                 password
@@ -68,13 +68,11 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
 
     const fetchUser = async() => {
        try {
-
-        const token = getToken()
-        const response = await axios.get(`${backEndURL}/api/v1/auth/fetchUser`, {
-           headers: {
-            // Authorization: `Bearer ${token}`,
-            token: token?.toString(),           
-           }
+           const token = getToken()
+           const response = await axios.get(`${backEndURL}/api/v1/user/fetchUser`, {
+               headers: {
+                   token: token,
+               }
         })
 
         return response.data;
