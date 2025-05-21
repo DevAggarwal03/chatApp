@@ -4,7 +4,6 @@ const cors = require('cors');
 const http = require('http')
 require('dotenv').config();
 const url = require('url')
-// const { v4: uuidv4 } = require('uuid');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./Routers/auth.Router.js');
 const firendReqRouter = require('./Routers/friendReq.Router.js');
@@ -19,14 +18,11 @@ const { checkUser } = require('./middleware/auth.middleware.js');
 const app = express();
 app.use(express.json());
 
-// const corsOption = {
-//     origin: process.env.frontendURL,
-//     optionSuccessStatus: 200
-// }
+const originURL = process.env.frontendURL;
 
 app.use(cors({
-  origin: 'http://localhost:5173', // your Vite frontend origin
-  credentials: true               // allow cookies and auth headers
+  origin: originURL, 
+  credentials: true               
 }));
 app.use(cookieParser());
 app.use('/api/v1/auth', authRouter);
@@ -40,7 +36,6 @@ const websocetserver = new WebSocketServer({ server: httpserver });
 websocetserver.on('connection', (connection, request) => {
     const parsedurl = url.parse(request.url, true);
     const {username,userId} = parsedurl.query;
-    console.log('query params: ', parsedurl.query)
     connections[userId] = connection;
     users[userId] = {
         userId,
@@ -51,7 +46,7 @@ websocetserver.on('connection', (connection, request) => {
     connection.on('close', () => handleclose(userId));
 });
 
-const port = 8080;
+const port = process.env.port;
 
 httpserver.listen(port, (req, res) => {
     console.log('websocket server started at port:', port);

@@ -12,7 +12,6 @@ function TypingBox({selected}: {selected: number | null}) {
     const {userInfo} = useContext(AuthContext);
     
     const clickHandeler = () => {
-        console.log('selectd: ', selected);
         if(selected && messageToSend !== "" && messageToSend !== undefined && webSocketRef.current.OPEN){
             const temp = {s_id: userInfo.id, s_username: userInfo.username, message: messageToSend};
             setCurrentMsgs((prev: any) => ([

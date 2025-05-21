@@ -1,8 +1,5 @@
 const pgClient = require("../DB");
 
-// all the message that is going to be added when chats are under way will be saved to
-// their respective tables.
-
 exports.insertMsg = async (req, res) => {
     const {user_id, username, rec_id, message} = req.body;
     console.log("inside inserMsg", user_id, rec_id);
@@ -37,6 +34,7 @@ exports.fetchChats = async(req, res) => {
             response:  result.rows
         })
     } catch (error) {
+        console.log(error);
         res.json({
             success: false,
             error: error,

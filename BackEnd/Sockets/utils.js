@@ -3,8 +3,6 @@ const axios = require('axios')
 const pgClient = require('../DB')
 
 const broadcast = async (senderId, recieverId, text) => {
-    console.log(recieverId, text);
-    console.log(state.users[recieverId]);
     const connection = state.connections[recieverId];
     const payload = {
         from: state.users[senderId],
@@ -16,7 +14,6 @@ const broadcast = async (senderId, recieverId, text) => {
         connection.send(JSON.stringify(payload));    
     }
     
-    //add to db
     const tableName = senderId > recieverId ? `room_${recieverId}_${senderId}` : `room_${senderId}_${recieverId}`;
     const insertQuery = `INSERT INTO ${tableName} (s_id, s_username, message) VALUES ($1, $2, $3);`
     try {
@@ -28,13 +25,6 @@ const broadcast = async (senderId, recieverId, text) => {
 };
 
 const handlemessage = (bytes, socket, user_id) => {
-    // {
-    //     type: 'chat',
-    //     payload: {
-    //         to: rec_id,
-    //         text: "text here"
-    //     }
-    // }
     const message = JSON.parse(bytes.toString());
     const persontosend = message.payload.to;
     const texttosend = message.payload.text;
@@ -45,7 +35,6 @@ const handlemessage = (bytes, socket, user_id) => {
 const handleclose = (uuid) => {
     delete state.connections[uuid];
     if (state.users[uuid]) state.users[uuid].isonline = false;
-    console.log('user disconnected');
 };
 
 module.exports = {handleclose, handlemessage};

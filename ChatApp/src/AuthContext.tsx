@@ -19,7 +19,6 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
             })
             return response.data;
         } catch (error) {
-            console.log(error);
             return {
                 message: "try again later",
                 success: false
@@ -58,7 +57,6 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
             setToken(token);
             return response.data;
         } catch (error) {
-            console.log(error);
             return {
                 message: "try again later",
                 success: false
@@ -70,7 +68,6 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
        try {
 
         const token = getToken()
-        console.log(token);
         const response = await axios.get(`${backEndURL}/api/v1/auth/fetchUser`, {
            headers: {
             // Authorization: `Bearer ${token}`,
@@ -80,7 +77,6 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
 
         return response.data;
        } catch (error) {
-        console.log(error);
         return {
             success:false,
             error: error

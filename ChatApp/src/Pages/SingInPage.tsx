@@ -17,7 +17,7 @@ function SignInPage({changeHandeler}: any) {
                 navigate('/chat')
             }
             else{
-                console.log('try again later');
+                console.log(res?.message);
             }
         }else{
             const res = await signUp(userData.userName, userData.email, userData.password);
@@ -26,7 +26,7 @@ function SignInPage({changeHandeler}: any) {
                 navigate('/chat')
             }
             else{
-                console.log('try again later');
+                window.alert(res?.message + "! Sign in via signIn page");
             }
         }
     }

@@ -28,10 +28,7 @@ function App() {
   }
   const sendHandeler = () => {
     if(friendId && friendId > 0){
-      console.log(friendId);
-      sendFriendRequest(friendId).then((res:any) => {
-        console.log(res);
-      })
+      sendFriendRequest(friendId);
       setOpenModel(prev => !prev)
     }
   }

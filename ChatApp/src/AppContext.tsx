@@ -30,7 +30,7 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
             })
             return response.data
         } catch (error) {
-            console.error(error);
+            console.error("error while fetching requests: ", error);
             return {};        
         }
     }
@@ -65,7 +65,6 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
                 },
             })
 
-            console.log(response.data);
             return response.data;
         } catch (error) {
            console.log(error);

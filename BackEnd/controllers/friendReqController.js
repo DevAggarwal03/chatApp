@@ -26,7 +26,6 @@ exports.fetchSentRequests = async (req, res) => {
     `
     try {
        const result = await pgClient.query(fetchQuery, [userData.id, status]);
-       console.log(result.rows);
        res.json({
         success: true,
         requests: result.rows,
@@ -44,7 +43,6 @@ exports.fetchSentRequests = async (req, res) => {
 exports.sendRequest = async (req, res) => {
     const {friendId} = req.body;
     const userData = req.userData;
-    console.log('sendFriend req: ', userData)
     const getAllReqQuery = `SELECT requester_id, requestee_id from friendRequests`;
     const sendQuery = `INSERT INTO friendRequests (requester_id, requestee_id) VALUES ($1, $2)`
     try {
@@ -69,6 +67,7 @@ exports.sendRequest = async (req, res) => {
         success: true,
        })
     } catch (error) {
+        console.log(error);
        res.json({
         success: false,
         error: error,
@@ -127,6 +126,7 @@ exports.handleRequest = async (req, res) => {
         return res.json({ success: true });
 
     } catch (error) {
+        console.log(error);
         await pgClient.query('ROLLBACK');
         return res.json({
             success: false,

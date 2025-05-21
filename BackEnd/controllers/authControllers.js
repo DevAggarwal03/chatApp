@@ -5,8 +5,6 @@ const jwtSecret = process.env.jwtSecret;
 
 exports.fetchUser = async (req, res) => {
     const userData = req.userData;
-    console.log(req.headers.token)
-    console.log(userData.username);
     const sqlQuery = `SELECT id, username, email FROM users WHERE username = $1`
     try {
         const response = await pgClient.query(sqlQuery, [userData.username])
@@ -47,12 +45,6 @@ exports.signinUser = async (req, res) => {
                     }
                 const webToken = genToken(payload, jwtSecret);
 
-                // res.cookie("token", webToken, {
-                //     httpOnly: true,
-                //     secure: true, 
-                //     sameSite: "strict",
-                // });
-
                 res.status(200).json({
                     message: 'signin successful',
                     success: true,
@@ -60,6 +52,7 @@ exports.signinUser = async (req, res) => {
                 });
 
             } catch (error) {
+                console.log(error)
                 res.json({
                     message: 'jsonWebToken error, while decoding',
                     success: false
@@ -72,6 +65,7 @@ exports.signinUser = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error)
         res.json({
             message: 'DB error',
             success: false
@@ -81,7 +75,6 @@ exports.signinUser = async (req, res) => {
 
 exports.signupUser = async (req, res) => {
     const {username, email, password} = req.body;
-    console.log(username, email, password);
     const sqlQuery = `INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING id;`
     const selectQuery = `SELECT id, username, email FROM users WHERE username = $1`
     try {
@@ -101,7 +94,7 @@ exports.signupUser = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log("error while adding user");
+        console.log(error);
         res.json({
             success: false,
             message: "try again later"

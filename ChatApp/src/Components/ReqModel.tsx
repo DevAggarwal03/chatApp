@@ -14,11 +14,18 @@ function ReqModel({setOpenReqModel, selectSentReqModel}:{setOpenReqModel: any, s
            <div className={`flex p-4 px-[25px] justify-center flex-wrap gap-x-2.5`}> 
             {
                 selectSentReqModel ? (
-                    sentRequests.map((req:any, index: number) => {
-                        return <div className="h-[120px]" key={index}>
-                            <ReqCard req={req} setOpenModel = {setOpenReqModel}/>
+                    sentRequests.length > 0 ? (
+                        sentRequests.map((req:any, index: number) => {
+                            return <div className="h-[120px]" key={index}>
+                                <ReqCard req={req} setOpenModel = {setOpenReqModel}/>
+                            </div>
+                        })
+                    ) : 
+                    (
+                         <div className='z-50 relative flex justify-center items-center gap-x-2.5 bg-[#e9c46a] rounded-lg min-w-[250px] max-w-[300px] p-4'>
+                            <span className="font-mono  justify-center font-bold text-[#023047] gap-y-4">No Requests Sent</span>
                         </div>
-                    })
+                    )
                 ) :
                 (
                     recievedRequests.length > 0 ? (

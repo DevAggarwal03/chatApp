@@ -47,13 +47,6 @@ function HomePage({toggleModel}: any) {
         }
     }, [userInfo])
 
-    if(sentRequests){
-        console.log(sentRequests)
-    }
-    if(recievedRequests){
-        console.log(recievedRequests)
-    }
-
     return ( 
         <div className="flex w-full px-3 min-h-[90vh] gap-x-2">
             {
