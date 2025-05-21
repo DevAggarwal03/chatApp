@@ -6,7 +6,6 @@ export const AuthContext = createContext<any>('');
 
 
 function AuthContextProvider({children}: {children: React.ReactNode}) {
-    const {setUserData} = useContext(SocketContext)
     const backEndURL = import.meta.env.VITE_BACKEND_URL;
     const [signedIn, setIsSignedIn] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<any>();
