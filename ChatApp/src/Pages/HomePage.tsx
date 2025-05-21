@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ChatArea from "../Components/ChatArea";
 import searchImg from '../assets/search-sort-svgrepo-com.svg'
 import plusImg from '../assets/plus-square-svgrepo-com.svg'
@@ -9,8 +9,8 @@ import ReqModel from "../Components/ReqModel";
 
 
 function HomePage({toggleModel}: any) {
-    const [searchWord, setSearchWord] = useState<string>("");
-    const {selectedPerson, setSelectedPerson, userData,fetchFriendRequests, sentRequests, setSentRequests, recievedRequests, setRecievedRequests, serverURL, acceptedRequests, setAcceptedRequests} = useContext(SocketContext)
+    const [, setSearchWord] = useState<string>("");
+    const {selectedPerson, setSelectedPerson, userData,fetchFriendRequests, sentRequests, setSentRequests, recievedRequests, setRecievedRequests, acceptedRequests, setAcceptedRequests} = useContext(SocketContext)
     const {fetchUser, setUserInfo, userInfo} = useContext(AuthContext);
     const [selectSentReqModel, setSelectSentModel] = useState<boolean>(true);
     const [openReqModel, setOpenReqModel] = useState<boolean>(false);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useRef } from "react";
+import React, { createContext } from "react";
 import { useState } from "react";
 export const AuthContext = createContext<any>('');
 
@@ -7,7 +7,7 @@ export const AuthContext = createContext<any>('');
 function AuthContextProvider({children}: {children: React.ReactNode}) {
 
     const backEndURL = import.meta.env.VITE_BACKEND_URL;
-    const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+    const [, setIsSignedIn] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<any>();
     const [signInPage, setSignInPage] = useState<boolean>(false);
     const signUp = async (username: string, email: string, password: string) => {

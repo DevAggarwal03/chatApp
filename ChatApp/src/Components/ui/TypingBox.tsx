@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import { SocketContext } from "../../AppContext";
 import { AuthContext } from "../../AuthContext";
 
@@ -37,14 +36,14 @@ function TypingBox({selected}: {selected: number | null}) {
     }
 
     if(sendBtnRef.current){
-        sendBtnRef.current.addEventListener('keypress', (e) => {
+        sendBtnRef.current.addEventListener('keypress', (e: any) => {
             if(e.key == 'enter'){
                 clickHandeler();
             }
         })
     }
     
-    const keyDownHandeler = (e) => {
+    const keyDownHandeler = (e: any) => {
         if(e.key === 'Enter'){
             clickHandeler();
         }
