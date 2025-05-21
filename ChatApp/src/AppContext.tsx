@@ -35,6 +35,47 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
         }
     }
 
+    const reqHandeler = async(isAccept : boolean, req_id : number) => {
+        try {
+            const data = {
+                isAccept,
+                req_id
+            }
+            const response = await axios.post(`${serverHttpURL}/api/v1/awknowledgeRequest`, data, {
+                headers: {
+                    token: getToken()
+                }
+            })
+            return response.data;
+        } catch (error) {
+           console.log(error);
+           return {
+            success: false,
+            error: error
+           } 
+        }
+    }
+
+    const sendFriendRequest = async(friendId: number) => {
+        try {
+            const token = getToken();
+            const response = await axios.post(`${serverHttpURL}/api/v1/sendRequest`,{friendId} ,{
+                headers: {
+                    token
+                },
+            })
+
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+           console.log(error);
+           return {
+            success: false,
+            error: error
+           } 
+        }
+    }
+
     const fetchStoredChats = async(recieverId: number) => {
         try {
             const response = await axios.get(`${serverHttpURL}/api/v1/room/fetchmessages`, {
@@ -56,7 +97,7 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     }
 
     return ( 
-       <SocketContext.Provider value={{selectedPerson, fetchStoredChats, setSelectedPerson, webSocketRef, recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, currentMsgs, setCurrentMsgs, serverURL}}>
+       <SocketContext.Provider value={{selectedPerson, reqHandeler, sendFriendRequest, fetchStoredChats, setSelectedPerson, webSocketRef, recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, currentMsgs, setCurrentMsgs, serverURL}}>
            {children}
        </SocketContext.Provider> 
      );

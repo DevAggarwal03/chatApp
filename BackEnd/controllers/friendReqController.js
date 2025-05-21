@@ -26,6 +26,7 @@ exports.fetchSentRequests = async (req, res) => {
     `
     try {
        const result = await pgClient.query(fetchQuery, [userData.id, status]);
+       console.log(result.rows);
        res.json({
         success: true,
         requests: result.rows,
@@ -43,6 +44,7 @@ exports.fetchSentRequests = async (req, res) => {
 exports.sendRequest = async (req, res) => {
     const {friendId} = req.body;
     const userData = req.userData;
+    console.log('sendFriend req: ', userData)
     const getAllReqQuery = `SELECT requester_id, requestee_id from friendRequests`;
     const sendQuery = `INSERT INTO friendRequests (requester_id, requestee_id) VALUES ($1, $2)`
     try {
@@ -51,7 +53,7 @@ exports.sendRequest = async (req, res) => {
         if(isPresent){
             res.json({
                 message: 'friend request already send!',
-                success: true,
+                success: false,
             })
         }
     } catch (error) {

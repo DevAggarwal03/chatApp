@@ -28,18 +28,15 @@ exports.insertMsg = async (req, res) => {
 exports.fetchChats = async(req, res) => {
     const {rec_id} = req.query;
     const user_id = req.userData.id;
-    console.log(user_id + " " + rec_id);
     const tableName = user_id > rec_id ? `room_${rec_id}_${user_id}` : `room_${user_id}_${rec_id}`;
     const fetchQuery = `SELECT * FROM ${tableName}`;
     try {
         const result = await pgClient.query(fetchQuery);
-        console.log(result.rows);
         res.json({
             success: true,
             response:  result.rows
         })
     } catch (error) {
-        console.log(error);
         res.json({
             success: false,
             error: error,

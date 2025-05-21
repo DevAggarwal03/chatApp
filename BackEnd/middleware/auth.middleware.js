@@ -3,12 +3,12 @@ const jwtSecret = process.env.jwtSecret; // Or however you're storing it
 
 exports.checkUser = async(req, res, next) => {
     const authHeader = req.headers.token;
-
+    console.log('token: ', authHeader)
     // if (authHeader && authHeader.startsWith("Bearer ")){
     if (authHeader){
         console.log(jwtSecret)
         // const token = authHeader.split(" ")[1];  
-        const token = authHeader;  
+        const token = authHeader; 
         try {
             console.log('heelo');
             const tokenData = await jwt.verify(token, jwtSecret);

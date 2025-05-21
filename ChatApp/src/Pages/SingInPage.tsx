@@ -33,7 +33,7 @@ function SignInPage({changeHandeler}: any) {
 
     return ( <div className="w-full h-full flex justify-center items-center">
         <div className="w-5/12 rounded-xl bg-[#f4a261] p-4 flex justify-center gap-y-4 items-center flex-col">
-            <h1 className="text-3xl text-[#2a9d8f] font-bold">{signInPage ? "Sign In" : "Sign Out"}</h1>
+            <h1 className="text-3xl text-[#2a9d8f] font-bold">{signInPage ? "Sign In" : "Sign up"}</h1>
             <div className="flex gap-y-1 flex-col rounded-xl w-full">
                 <div className="bg-[#f6b27b] p-2 flex flex-col gap-y-1">
                     <label htmlFor="userName">UserName</label>
