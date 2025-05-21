@@ -12,7 +12,6 @@ function SignInPage({changeHandeler}: any) {
         console.log(userData)
         if(signInPage == true){
             const res = await signIn(userData.userName, userData.email, userData.password);
-            console.log(res);
             if(res?.success){
                 navigate('/chat')
             }
@@ -21,7 +20,6 @@ function SignInPage({changeHandeler}: any) {
             }
         }else{
             const res = await signUp(userData.userName, userData.email, userData.password);
-            console.log(res);
             if(res?.success){
                 navigate('/chat')
             }
