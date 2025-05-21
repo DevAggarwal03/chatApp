@@ -19,6 +19,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
             })
             return response.data;
         } catch (error) {
+            console.log(error)
             return {
                 message: "try again later",
                 success: false
@@ -57,6 +58,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
             setToken(token);
             return response.data;
         } catch (error) {
+            console.log(error);
             return {
                 message: "try again later",
                 success: false
@@ -77,6 +79,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
 
         return response.data;
        } catch (error) {
+        console.log(error);
         return {
             success:false,
             error: error

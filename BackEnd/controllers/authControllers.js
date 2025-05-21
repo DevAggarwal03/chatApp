@@ -33,6 +33,7 @@ const genToken = (data, key) => {
 
 exports.signinUser = async (req, res) => {
     const {username, email, password} = req.body;
+    console.log(username, email, password)
     const selectQuery = `SELECT id, username, email, password FROM users WHERE username = $1`
     try {
         const response = await pgClient.query(selectQuery, [username])

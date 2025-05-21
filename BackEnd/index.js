@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 
 const originURL = process.env.frontendURL;
-
+console.log(originURL)
 app.use(cors({
   origin: originURL, 
   credentials: true               
