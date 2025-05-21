@@ -1,13 +1,14 @@
 import axios from "axios";
-import React, { createContext } from "react";
+import React, { createContext, useContext } from "react";
 import { useState } from "react";
+import { SocketContext } from "./AppContext";
 export const AuthContext = createContext<any>('');
 
 
 function AuthContextProvider({children}: {children: React.ReactNode}) {
-
+    const {setUserData} = useContext(SocketContext)
     const backEndURL = import.meta.env.VITE_BACKEND_URL;
-    const [, setIsSignedIn] = useState<boolean>(false);
+    const [signedIn, setIsSignedIn] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<any>();
     const [signInPage, setSignInPage] = useState<boolean>(false);
     const signUp = async (username: string, email: string, password: string) => {
@@ -87,7 +88,7 @@ function AuthContextProvider({children}: {children: React.ReactNode}) {
     }
 
     return ( 
-       <AuthContext.Provider value={{signInPage, getToken, signOut, setSignInPage, signIn, userInfo, setUserInfo, signUp, fetchUser}}>
+       <AuthContext.Provider value={{signInPage, signedIn, getToken, signOut, setSignInPage, signIn, userInfo, setUserInfo, signUp, fetchUser}}>
            {children}
        </AuthContext.Provider> );
 }

@@ -1,4 +1,4 @@
-import { useContext} from "react";
+import { useContext, useEffect} from "react";
 import { SocketContext } from "../AppContext";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../AuthContext";
@@ -6,7 +6,14 @@ import { AuthContext } from "../AuthContext";
 function SignInPage({changeHandeler}: any) {
     const navigate = useNavigate(); 
     const {userData} = useContext(SocketContext)
-    const {signUp, signIn, signInPage} = useContext(AuthContext);
+    const {signUp, signIn, signInPage, getToken} = useContext(AuthContext);
+
+    useEffect(() => {
+        const token = getToken();
+        if(token){
+            navigate('/chat');
+        }
+    }, [])
 
     const submitHandeler = async() => {
         console.log(userData)

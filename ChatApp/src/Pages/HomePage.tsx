@@ -6,17 +6,26 @@ import { SocketContext } from "../AppContext";
 import { AuthContext } from "../AuthContext";
 import defImg from '../assets/profile-default-svgrepo-com.svg'
 import ReqModel from "../Components/ReqModel";
+import { useNavigate } from "react-router";
 
 
 function HomePage({toggleModel}: any) {
     const [, setSearchWord] = useState<string>("");
     const {selectedPerson, setSelectedPerson, userData,fetchFriendRequests, sentRequests, setSentRequests, recievedRequests, setRecievedRequests, acceptedRequests, setAcceptedRequests} = useContext(SocketContext)
-    const {fetchUser, setUserInfo, userInfo} = useContext(AuthContext);
+    const {fetchUser, setUserInfo, getToken, userInfo} = useContext(AuthContext);
     const [selectSentReqModel, setSelectSentModel] = useState<boolean>(true);
     const [openReqModel, setOpenReqModel] = useState<boolean>(false);
     const searchInputHandeler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchWord(e.target.value);
     }
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = getToken();
+        if(!token){
+            navigate('/');
+        }
+    }, [])
 
     const selectModalHandeler = (e: any) => {
         if(e.target.id == "sentReq"){

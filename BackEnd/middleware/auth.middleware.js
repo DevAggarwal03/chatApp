@@ -6,7 +6,6 @@ exports.checkUser = async(req, res, next) => {
     if (authHeader){
         const token = authHeader; 
         try {
-            console.log('heelo');
             const tokenData = jwt.verify(token, jwtSecret);
             req.userData = tokenData;
             next(); 
