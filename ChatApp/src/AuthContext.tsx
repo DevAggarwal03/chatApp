@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext } from "react";
 import { useState } from "react";
-import { SocketContext } from "./AppContext";
 export const AuthContext = createContext<any>('');
 
 
