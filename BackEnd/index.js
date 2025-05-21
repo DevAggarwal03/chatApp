@@ -47,7 +47,6 @@ websocetserver.on('connection', (connection, request) => {
         username,
         isonline: true,
     };
-    // console.log(userId, users[userId]);
     connection.on('message', (message) => handlemessage(message, connection, userId));
     connection.on('close', () => handleclose(userId));
 });

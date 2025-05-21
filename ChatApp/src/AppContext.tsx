@@ -33,9 +33,30 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
             console.error(error);
             return {};        
         }
-    }     
+    }
+
+    const fetchStoredChats = async(recieverId: number) => {
+        try {
+            const response = await axios.get(`${serverHttpURL}/api/v1/room/fetchmessages`, {
+                headers: {
+                    token: getToken()
+                },
+                params: {
+                    rec_id: recieverId
+                }
+            })
+            return response.data;
+        } catch (error) {
+           console.log(error);
+           return {
+            success: false,
+            error: error
+           } 
+        }
+    }
+
     return ( 
-       <SocketContext.Provider value={{selectedPerson, setSelectedPerson, webSocketRef, recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, currentMsgs, setCurrentMsgs, serverURL}}>
+       <SocketContext.Provider value={{selectedPerson, fetchStoredChats, setSelectedPerson, webSocketRef, recievedRequests, setRecievedRequests, userData, acceptedRequests, setAcceptedRequests, sentRequests, setSentRequests, fetchFriendRequests, setUserData, currentMsgs, setCurrentMsgs, serverURL}}>
            {children}
        </SocketContext.Provider> 
      );

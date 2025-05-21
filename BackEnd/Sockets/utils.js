@@ -1,8 +1,8 @@
-const { response } = require('express');
 const { state } = require('../index')
-const { axios } = require('axios')
+const axios = require('axios')
+const pgClient = require('../DB')
 
-const broadcast = (senderId, recieverId, text) => {
+const broadcast = async (senderId, recieverId, text) => {
     console.log(recieverId, text);
     console.log(state.users[recieverId]);
     const connection = state.connections[recieverId];
@@ -17,21 +17,14 @@ const broadcast = (senderId, recieverId, text) => {
     }
     
     //add to db
-
-    // fetch('http://localhost:8080/api/v1/room/transmitMessage', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         user_id: senderId,
-    //         rec_id: recieverId,
-    //         username: state.users[senderId].username,
-    //         message: text
-    //     })
-    // }).then(response => console.log(response.success))
-    //     .catch(response => console.log(response.error))
-
+    const tableName = senderId > recieverId ? `room_${recieverId}_${senderId}` : `room_${senderId}_${recieverId}`;
+    const insertQuery = `INSERT INTO ${tableName} (s_id, s_username, message) VALUES ($1, $2, $3);`
+    try {
+        const result = await pgClient.query(insertQuery, [senderId, state.users[senderId].username, text]);
+        console.log(result.rows);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const handlemessage = (bytes, socket, user_id) => {
